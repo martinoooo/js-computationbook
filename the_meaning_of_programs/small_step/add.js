@@ -24,6 +24,7 @@ class Add {
     } else if (this.right.reducible()) {
       return new Add(this.left, this.right.reduce(environment));
     } else {
+      // this.left为object，调用 '+'运算会调用toString方法
       return new Number(this.left + this.right);
     }
   }

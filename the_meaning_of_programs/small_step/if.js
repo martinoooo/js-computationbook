@@ -32,7 +32,7 @@ class If {
         environment
       ];
     } else {
-      if (this.condition.value === new Boolean(true).value) {
+      if (this.condition.value === true) {
         return [this.consequence, environment];
       } else {
         return [this.alternative, environment];
