@@ -1,8 +1,8 @@
 class NFA {
   constructor(current_states, accept_states, rulebook) {
-    this.current_states = current_states;
     this.accept_states = accept_states;
     this.rulebook = rulebook;
+    this.current_states = this.rulebook.follow_free_moves(current_states);
   }
 
   // accept_states里面是否包含current_states里面的数字

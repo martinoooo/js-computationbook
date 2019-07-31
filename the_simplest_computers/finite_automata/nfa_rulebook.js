@@ -9,7 +9,7 @@ class NFARulebook {
       .map(state => {
         return this.follow_rules_for(state, character);
       })
-      .reduce((a, b) => a.concat(b));
+      .reduce((a, b) => a.concat(b), []);
     return [...new Set(arr)];
   }
 
@@ -28,6 +28,7 @@ class NFARulebook {
   follow_free_moves(states) {
     const more_states = this.next_states(states, null);
     const temp = Array.from(new Set(states.concat(more_states)));
+    // 如果可能的状态包括初始状态，就可以返回了
     if (temp.length === states.length) {
       return states;
     } else {
