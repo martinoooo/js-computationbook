@@ -14,10 +14,11 @@ class NFA {
   }
 
   read_character(character) {
-    this.current_states = this.rulebook.next_states(
+    const current_states = this.rulebook.next_states(
       this.current_states,
       character
     );
+    this.current_states = this.rulebook.follow_free_moves(current_states);
     return this;
   }
 

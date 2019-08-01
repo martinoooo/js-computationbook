@@ -2,6 +2,7 @@ import Pattern from "./pattern";
 import FARule from "../finite_automata/fa_rule";
 import NFARulebook from "../finite_automata/nfa_rulebook";
 import NFADesign from "../finite_automata/nfa_design";
+import uniqId from "./uniqId";
 
 class Literal extends Pattern {
   constructor(character) {
@@ -18,8 +19,8 @@ class Literal extends Pattern {
   }
 
   to_nfa_design() {
-    const start_state = "";
-    const accept_state = this.character;
+    const start_state = uniqId();
+    const accept_state = uniqId();
     const rule = new FARule(start_state, this.character, accept_state);
     const rulebook = new NFARulebook([rule]);
 

@@ -1,4 +1,8 @@
 import Pattern from "./pattern";
+import uniqId from "./uniqId";
+import FARule from "../finite_automata/fa_rule";
+import NFARulebook from "../finite_automata/nfa_rulebook";
+import NFADesign from "../finite_automata/nfa_design";
 
 class Choose extends Pattern {
   constructor(first, second) {
@@ -17,6 +21,25 @@ class Choose extends Pattern {
 
   get precedence() {
     return 0;
+  }
+
+  to_nfa_design() {
+    const first_nfa_design = this.first.to_nfa_design();
+    const second_nfa_design = this.second.to_nfa_design();
+    const start_state = uniqId();
+    const accept_states = first_nfa_design.accept_states.concat(
+      second_nfa_design.accept_states
+    );
+    const rules = first_nfa_design.rulebook.rules.concat(
+      second_nfa_design.rulebook.rules
+    );
+    const extra_rules = [first_nfa_design, second_nfa_design].map(
+      nfa_design => {
+        return new FARule(start_state, null, nfa_design.start_state);
+      }
+    );
+    const rulebook = new NFARulebook(rules.concat(extra_rules));
+    return new NFADesign(start_state, accept_states, rulebook);
   }
 }
 

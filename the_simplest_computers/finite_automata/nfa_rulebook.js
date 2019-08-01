@@ -32,7 +32,7 @@ class NFARulebook {
     if (temp.length === states.length) {
       return states;
     } else {
-      return this.follow_free_moves(states.concat(more_states));
+      return this.follow_free_moves(temp);
     }
   }
 }
