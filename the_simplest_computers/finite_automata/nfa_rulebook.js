@@ -35,6 +35,17 @@ class NFARulebook {
       return this.follow_free_moves(temp);
     }
   }
+
+  alphabet() {
+    const characters = this.rules
+      .map(farule => {
+        return farule.character;
+      })
+      .filter(character => {
+        return !!character;
+      });
+    return Array.from(new Set([...characters]));
+  }
 }
 
 export default NFARulebook;
