@@ -143,3 +143,21 @@ console.log("------------");
 const start_state = nfa_design.to_nfa().current_states;
 console.log(start_state);
 console.log(simulation.discover_states_and_rules([start_state]));
+
+console.log("------------");
+rulebook = new NFARulebook([
+  new FARule(0, "(", 1),
+  new FARule(1, ")", 0),
+  new FARule(1, "(", 2),
+  new FARule(2, ")", 1),
+  new FARule(2, "(", 3),
+  new FARule(3, ")", 2)
+]);
+console.log(rulebook);
+nfa_design = new NFADesign(0, [0], rulebook);
+console.log(nfa_design);
+console.log(nfa_design.accepts("(()")); // => false
+console.log(nfa_design.accepts("())")); // => false
+console.log(nfa_design.accepts("(())")); // => true
+console.log(nfa_design.accepts("(()(()()))")); // => true
+console.log(nfa_design.accepts("(((())))")); // => true
