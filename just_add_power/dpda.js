@@ -1,3 +1,4 @@
+//  一个DPDA对象，有当前的配置，可以接受的状态，规则书
 class DPDA {
   constructor(current_configuration, accept_states, rulebook) {
     this.local_current_configuration = current_configuration;
@@ -9,6 +10,7 @@ class DPDA {
     return this.rulebook.follow_free_moves(this.local_current_configuration);
   }
 
+  // 可以接受的状态中是否包括了当前配置的状态
   accepting() {
     return this.accept_states.includes(this.current_configuration.state);
   }
@@ -17,6 +19,7 @@ class DPDA {
     this.local_current_configuration = this.next_configuration(character);
   }
 
+  // 读取字符串，获取下一个配置
   read_string(string) {
     let chars = string.split("");
     for (let i = 0; i < chars.length; i++) {

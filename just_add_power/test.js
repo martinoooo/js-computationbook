@@ -22,7 +22,7 @@ let rule = new PDARule(1, "(", 2, "$", ["b", "$"]);
 console.log(rule);
 let configuration = new PDAConfiguration(1, new Stack(["$"]));
 console.log(configuration);
-console.log(rule.applies_to(configuration, "("));
+console.log(rule.applies_to(configuration, "(")); // true
 
 console.log("-----------------------");
 stack = new Stack(["$"])
@@ -96,3 +96,41 @@ console.log(dpda.current_configuration); // PDAConfiguration { state: 112, stack
 console.log(dpda.accepting()); // => false
 console.log(dpda.isStuck()); // => true
 console.log(dpda_design.accepts("())")); // => false
+
+console.log("-----------------------");
+rulebook = new DPDARulebook([
+  new PDARule(1, "a", 2, "$", ["a", "$"]),
+  new PDARule(1, "b", 2, "$", ["b", "$"]),
+  new PDARule(2, "a", 2, "a", ["a", "a"]),
+  new PDARule(2, "b", 2, "b", ["b", "b"]),
+  new PDARule(2, "a", 2, "b", []),
+  new PDARule(2, "b", 2, "a", []),
+  new PDARule(2, null, 1, "$", ["$"])
+]);
+console.log(rulebook);
+dpda_design = new DPDADesign(1, "$", [1], rulebook);
+console.log(dpda_design);
+console.log(dpda_design.accepts("ababab"));
+console.log(dpda_design.accepts("bbbaaaab"));
+console.log(dpda_design.accepts("baa"));
+
+console.log("-----------------------");
+rulebook = new DPDARulebook([
+  new PDARule(1, "a", 1, "$", ["a", "$"]),
+  new PDARule(1, "a", 1, "a", ["a", "a"]),
+  new PDARule(1, "a", 1, "b", ["a", "b"]),
+  new PDARule(1, "b", 1, "$", ["b", "$"]),
+  new PDARule(1, "b", 1, "a", ["b", "a"]),
+  new PDARule(1, "b", 1, "b", ["b", "b"]),
+  new PDARule(1, "m", 2, "$", ["$"]),
+  new PDARule(1, "m", 2, "a", ["a"]),
+  new PDARule(1, "m", 2, "b", ["b"]),
+  new PDARule(2, "a", 2, "a", []),
+  new PDARule(2, "b", 2, "b", []),
+  new PDARule(2, null, 3, "$", ["$"])
+]);
+dpda_design = new DPDADesign(1, "$", [3], rulebook);
+console.log(dpda_design.accepts("abmba"));
+console.log(dpda_design.accepts("babbamabbab"));
+console.log(dpda_design.accepts("abmb"));
+console.log(dpda_design.accepts("baambaa"));

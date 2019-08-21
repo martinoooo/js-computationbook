@@ -3,10 +3,12 @@ class Stack {
     this.contents = contents;
   }
 
+  // 放到第一个
   push(character) {
     return new Stack([character].concat(this.contents));
   }
 
+  // 拿出第一个
   pop() {
     return new Stack(this.contents.slice(1));
   }

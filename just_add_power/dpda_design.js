@@ -4,10 +4,10 @@ import Stack from "./stack";
 
 class DPDADesign {
   constructor(start_state, bottom_character, accept_states, rulebook) {
-    this.start_state = start_state;
-    this.bottom_character = bottom_character;
-    this.accept_states = accept_states;
-    this.rulebook = rulebook;
+    this.start_state = start_state; // 初始状态
+    this.bottom_character = bottom_character; // 栈中初始的字符
+    this.accept_states = accept_states; // 可接受的状态
+    this.rulebook = rulebook; // 规则书
   }
 
   accepts(string) {
