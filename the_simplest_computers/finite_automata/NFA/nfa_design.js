@@ -1,5 +1,3 @@
-// require 'set'
-
 import NFA from "./nfa";
 
 class NFADesign {

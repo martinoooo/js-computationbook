@@ -27,12 +27,13 @@ class NFARulebook {
 
   follow_free_moves(states) {
     const more_states = this.next_states(states, null);
-    const temp = Array.from(new Set(states.concat(more_states)));
-    // 如果可能的状态包括初始状态，就可以返回了
-    if (temp.length === states.length) {
+    // 如果初始状态 包括了 所有有可能的状态里时，就可以返回了
+    if (include(more_states, states)) {
       return states;
     } else {
-      return this.follow_free_moves(temp);
+      return this.follow_free_moves(
+        Array.from(new Set(states.concat(more_states)))
+      );
     }
   }
 
@@ -49,3 +50,12 @@ class NFARulebook {
 }
 
 export default NFARulebook;
+
+// 判断arr2是否包含arr1数组
+function include(arr1, arr2) {
+  return arr1.every(element => {
+    return arr2.find(item => {
+      return item === element;
+    });
+  });
+}

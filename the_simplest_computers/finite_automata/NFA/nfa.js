@@ -2,7 +2,11 @@ class NFA {
   constructor(current_states, accept_states, rulebook) {
     this.accept_states = accept_states;
     this.rulebook = rulebook;
-    this.current_states = this.rulebook.follow_free_moves(current_states);
+    this._current_states = current_states;
+  }
+
+  get current_states() {
+    return this.rulebook.follow_free_moves(this._current_states);
   }
 
   // accept_states里面是否包含current_states里面的数字
@@ -14,11 +18,10 @@ class NFA {
   }
 
   read_character(character) {
-    const current_states = this.rulebook.next_states(
+    this._current_states = this.rulebook.next_states(
       this.current_states,
       character
     );
-    this.current_states = this.rulebook.follow_free_moves(current_states);
     return this;
   }
 
