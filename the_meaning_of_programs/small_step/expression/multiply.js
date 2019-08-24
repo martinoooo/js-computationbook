@@ -14,10 +14,12 @@ class Multiply {
     return `${this.left} * ${this.right}`;
   }
 
+  // Multiply表达式总是能规约的
   reducible() {
     return true;
   }
 
+  // 对表达式进行规约
   reduce(environment) {
     if (this.left.reducible()) {
       return new Multiply(this.left.reduce(environment), this.right);

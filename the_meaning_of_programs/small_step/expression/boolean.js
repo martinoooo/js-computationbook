@@ -11,6 +11,7 @@ class Boolean {
     return this.value;
   }
 
+  // Boolean总是表示一个值，不能规约成任何其它东西了
   reducible() {
     return false;
   }

@@ -1,4 +1,4 @@
-import Boolean from "./boolean";
+import Boolean from "../expression/boolean";
 
 class If {
   constructor(condition, consequence, alternative) {
@@ -32,7 +32,7 @@ class If {
         environment
       ];
     } else {
-      if (this.condition.value === true) {
+      if (this.condition.value === new Boolean(true).value) {
         return [this.consequence, environment];
       } else {
         return [this.alternative, environment];

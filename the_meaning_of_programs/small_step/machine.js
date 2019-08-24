@@ -1,14 +1,14 @@
-import Number from "./number";
-import Multiply from "./multiply";
-import Add from "./add";
-import LessThan from "./less_than";
-import Variable from "./variable";
-import Assign from "./assign";
-import If from "./if";
-import Boolean from "./boolean";
-import DoNothing from "./do_nothing";
-import Sequence from "./sequence";
-import While from "./while";
+import Number from "./expression/number";
+import Multiply from "./expression/multiply";
+import Add from "./expression/add";
+import LessThan from "./expression/less_than";
+import Variable from "./expression/variable";
+import Assign from "./statement/assign";
+import If from "./statement/if";
+import Boolean from "./expression/boolean";
+import DoNothing from "./statement/do_nothing";
+import Sequence from "./statement/sequence";
+import While from "./statement/while";
 
 class Statement_Machine {
   constructor(expression, environment) {
@@ -28,6 +28,7 @@ class Statement_Machine {
       this.step();
     }
     console.log([this.expression, this.environment]);
+    return [this.expression, this.environment];
   }
 }
 
@@ -47,9 +48,11 @@ class Expression_Machine {
       this.step();
     }
     console.log(this.expression);
+    return this.expression;
   }
 }
 
+// machine机器，对表达式进行自动规约，传入表达式和当前环境
 function Machine(syntax, args) {
   if (
     syntax instanceof Add ||

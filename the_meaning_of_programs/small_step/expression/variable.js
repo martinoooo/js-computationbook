@@ -15,6 +15,7 @@ class Variable {
     return true;
   }
 
+  // 变量的含义就是在环境中查找变量名并返回查找到的值
   reduce(environment) {
     return environment[this.name];
   }
