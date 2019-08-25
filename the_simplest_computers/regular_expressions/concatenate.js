@@ -1,7 +1,7 @@
 import Pattern from "./pattern";
-import NFARulebook from "../finite_automata/nfa_rulebook";
+import NFARulebook from "../finite_automata/NFA/nfa_rulebook";
 import FARule from "../finite_automata/fa_rule";
-import NFADesign from "../finite_automata/nfa_design";
+import NFADesign from "../finite_automata/NFA/nfa_design";
 
 class Concatenate extends Pattern {
   constructor(first, second) {
@@ -30,6 +30,7 @@ class Concatenate extends Pattern {
     const rules = first_nfa_design.rulebook.rules.concat(
       second_nfa_design.rulebook.rules
     );
+    // 当状态在第一个NFA的接受状态时，进行自由移动到第二个NFA的起始状态
     const extra_rules = first_nfa_design.accept_states.map(state => {
       return new FARule(state, null, second_nfa_design.start_state);
     });

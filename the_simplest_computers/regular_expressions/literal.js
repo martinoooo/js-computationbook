@@ -1,7 +1,7 @@
 import Pattern from "./pattern";
 import FARule from "../finite_automata/fa_rule";
-import NFARulebook from "../finite_automata/nfa_rulebook";
-import NFADesign from "../finite_automata/nfa_design";
+import NFARulebook from "../finite_automata/NFA/nfa_rulebook";
+import NFADesign from "../finite_automata/NFA/nfa_design";
 import uniqId from "./uniqId";
 
 class Literal extends Pattern {
@@ -20,6 +20,7 @@ class Literal extends Pattern {
 
   to_nfa_design() {
     const start_state = uniqId();
+    // 使用uniqId，保证accept_state是唯一的，只有通过这个规则才可以到达接受状态
     const accept_state = uniqId();
     const rule = new FARule(start_state, this.character, accept_state);
     const rulebook = new NFARulebook([rule]);
