@@ -9,6 +9,7 @@ class NFA {
     return this.rulebook.follow_free_moves(this._current_states);
   }
 
+  // 如果current_states里有一个是接受状态，那么就说它处于接受状态
   // accept_states里面是否包含current_states里面的数字
   accepting() {
     const filter = this.current_states.filter(v =>

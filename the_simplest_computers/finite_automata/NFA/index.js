@@ -6,7 +6,7 @@ import FARule from "../fa_rule";
 import NFARulebook from "./nfa_rulebook";
 import NFA from "./nfa";
 import NFADesign from "./nfa_design";
-// import NFASimulation from "./nfa_simulation";
+import NFASimulation from "./nfa_simulation";
 
 console.log("------------");
 let rulebook = new NFARulebook([
@@ -70,59 +70,55 @@ assert.deepEqual(nfa_design.accepts("aaa"), true);
 assert.deepEqual(nfa_design.accepts("aaaaa"), false);
 assert.deepEqual(nfa_design.accepts("aaaaaa"), true);
 
-// console.log("------------");
-// rulebook = new NFARulebook([
-//   new FARule(1, "a", 1),
-//   new FARule(1, "a", 2),
-//   new FARule(1, null, 2),
-//   new FARule(2, "b", 3),
-//   new FARule(3, "b", 1),
-//   new FARule(3, null, 2)
-// ]);
-// console.log(rulebook);
-// nfa_design = new NFADesign(1, [3], rulebook);
-// console.log(nfa_design);
-// console.log(nfa_design.to_nfa().current_states);
-// console.log(nfa_design.to_nfa([2]).current_states);
-// console.log(nfa_design.to_nfa([3]).current_states);
-// nfa = nfa_design.to_nfa([2, 3]);
-// console.log(nfa);
-// nfa.read_character("b");
-// console.log(nfa.current_states);
+console.log("-----to_nfa生成的NFA可以传参任何其它起始状态-------");
+rulebook = new NFARulebook([
+  new FARule(1, "a", 1),
+  new FARule(1, "a", 2),
+  new FARule(1, null, 2),
+  new FARule(2, "b", 3),
+  new FARule(3, "b", 1),
+  new FARule(3, null, 2)
+]);
+nfa_design = new NFADesign(1, [3], rulebook);
+console.log(nfa_design);
+assert.deepEqual(nfa_design.to_nfa().current_states, [1, 2]);
+assert.deepEqual(nfa_design.to_nfa([2]).current_states, [2]);
+assert.deepEqual(nfa_design.to_nfa([3]).current_states, [3, 2]);
+nfa = nfa_design.to_nfa([2, 3]);
+console.log(nfa);
+nfa.read_character("b");
+assert.deepEqual(nfa.current_states, [3, 1, 2]);
 
-// console.log("------------");
-// let simulation = new NFASimulation(nfa_design);
-// console.log(simulation);
-// console.log(simulation.next_state([1, 2], "a"));
-// console.log(simulation.next_state([1, 2], "b")); //  => #<Set: {3, 2}>
-// console.log(simulation.next_state([3, 2], "b")); // => #<Set: {1, 3, 2}>
-// console.log(simulation.next_state([1, 3, 2], "b")); //  => #<Set: {1, 3, 2}>
-// console.log(simulation.next_state([1, 3, 2], "a")); // => #<Set: {1, 2}>
+console.log("----不同的起始状态，输入不同的字符获得NFA下一个状态-------");
+let simulation = new NFASimulation(nfa_design);
+console.log(simulation);
+assert.deepEqual(simulation.next_state([1, 2], "a"), [1, 2]);
+assert.deepEqual(simulation.next_state([1, 2], "b"), [3, 2]);
+assert.deepEqual(simulation.next_state([3, 2], "b"), [1, 3, 2]);
+assert.deepEqual(simulation.next_state([1, 3, 2], "b"), [1, 3, 2]);
+assert.deepEqual(simulation.next_state([1, 3, 2], "a"), [1, 2]);
 
-// console.log("------------");
-// console.log(rulebook.alphabet());
-// console.log(simulation.rules_for([1, 2]));
-// console.log(simulation.rules_for([3, 2]));
+console.log("----枚举相同起始状态下，不同的输入的下一个状态--------");
+assert.deepEqual(rulebook.alphabet(), ["a", "b"]);
+console.log(simulation.rules_for([1, 2]));
+// [
+//   #<FARule 1,2:a --> 1,2>,
+//   #<FARule 1,2:b --> 3,2>
+// ]
+console.log(simulation.rules_for([3, 2]));
+// [
+//   #<FARule 3,2:a --> >,
+//   #<FARule 3,2:b --> 1,3,2>
+// ]
 
-// console.log("------------");
-// const start_state = nfa_design.to_nfa().current_states;
-// console.log(start_state);
-// console.log(simulation.discover_states_and_rules([start_state]));
+console.log("-----获得在当前状态下，所有有可能的下一个状态的值-------");
+const start_state = nfa_design.to_nfa().current_states;
+console.log(start_state); // [ 1, 2 ]
+console.log(simulation.discover_states_and_rules([start_state]));
 
-// console.log("------------");
-// rulebook = new NFARulebook([
-//   new FARule(0, "(", 1),
-//   new FARule(1, ")", 0),
-//   new FARule(1, "(", 2),
-//   new FARule(2, ")", 1),
-//   new FARule(2, "(", 3),
-//   new FARule(3, ")", 2)
-// ]);
-// console.log(rulebook);
-// nfa_design = new NFADesign(0, [0], rulebook);
-// console.log(nfa_design);
-// console.log(nfa_design.accepts("(()")); // => false
-// console.log(nfa_design.accepts("())")); // => false
-// console.log(nfa_design.accepts("(())")); // => true
-// console.log(nfa_design.accepts("(()(()()))")); // => true
-// console.log(nfa_design.accepts("(((())))")); // => true
+console.log("------------");
+let dfa_design = simulation.to_dfa_design();
+console.log(dfa_design); //  => #<struct DFADesign ...>
+assert.deepEqual(dfa_design.accepts("aaa"), false);
+assert.deepEqual(dfa_design.accepts("aab"), true);
+assert.deepEqual(dfa_design.accepts("bbbabb"), true);

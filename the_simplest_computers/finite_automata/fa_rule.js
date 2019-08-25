@@ -1,4 +1,5 @@
 class FARule {
+  // state可能为number，也有可能为数组
   constructor(state, character, next_state) {
     this.state = state;
     this.character = character;
@@ -6,7 +7,7 @@ class FARule {
   }
 
   applies_to(state, character) {
-    return this.state == state && this.character == character;
+    return isSame(this.state, state) && this.character == character;
   }
 
   follow() {
@@ -19,3 +20,11 @@ class FARule {
 }
 
 export default FARule;
+
+function isSame(val1, val2) {
+  if (typeof val1 === "number" && typeof val2 === "number") {
+    return val1 === val2;
+  } else {
+    return val1.sort().toString() === val2.sort().toString();
+  }
+}
