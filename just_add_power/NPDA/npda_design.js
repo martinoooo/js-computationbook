@@ -1,5 +1,5 @@
-import Stack from "./stack";
-import PDAConfiguration from "./pda_configuration";
+import Stack from "../stack";
+import PDAConfiguration from "../pda_configuration";
 import NPDA from "./npda";
 
 class NPDADesign {
