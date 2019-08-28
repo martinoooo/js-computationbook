@@ -1,3 +1,4 @@
+// 栈，后进先出
 class Stack {
   constructor(contents) {
     this.contents = contents;

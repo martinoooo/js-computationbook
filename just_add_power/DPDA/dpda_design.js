@@ -1,6 +1,6 @@
-import PDAConfiguration from "./pda_configuration";
-import DPDA from "./DPDA";
-import Stack from "./stack";
+import PDAConfiguration from "../pda_configuration";
+import DPDA from "./dpda";
+import Stack from "../stack";
 
 class DPDADesign {
   constructor(start_state, bottom_character, accept_states, rulebook) {

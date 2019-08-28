@@ -14,8 +14,8 @@ class PDARule {
   applies_to(configuration, character) {
     return (
       this.state == configuration.state &&
-      this.pop_character == configuration.stack.top &&
-      this.character == character
+      this.character == character &&
+      this.pop_character == configuration.stack.top
     );
   }
 

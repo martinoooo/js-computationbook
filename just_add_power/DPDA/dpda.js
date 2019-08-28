@@ -32,6 +32,7 @@ class DPDA {
   }
 
   next_configuration(character) {
+    // 如果没有规则应用到，就说明是stuck了。
     if (this.rulebook.applies_to(this.current_configuration, character)) {
       return this.rulebook.next_configuration(
         this.current_configuration,
