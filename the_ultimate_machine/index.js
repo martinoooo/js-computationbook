@@ -1,3 +1,4 @@
+import assert from "assert";
 import Tape from "./tape";
 import TMRule from "./tm_rule";
 import TMConfiguration from "./tm_configuration";
@@ -6,7 +7,7 @@ import DTM from "./dtm";
 
 let tape = new Tape(["1", "0", "1"], "1", [], "_");
 console.log(tape); //  => #<Tape 101(1)>
-console.log(tape.middle); //  => "1"
+assert.strictEqual(tape.middle, "1");
 
 console.log("-----------------------");
 console.log(tape); // => #<Tape 101(1)>
@@ -19,15 +20,18 @@ console.log("-----------------------");
 let rule = new TMRule(1, "0", 2, "1", "right");
 console.log(rule);
 // => #<struct TMRule state=1, character="0", next_state=2, write_character="1", direction=:right
-console.log(
-  rule.applies_to(new TMConfiguration(1, new Tape([], "0", [], "_")))
-); // => true
-console.log(
-  rule.applies_to(new TMConfiguration(1, new Tape([], "1", [], "_")))
-); // => false
-console.log(
-  rule.applies_to(new TMConfiguration(2, new Tape([], "0", [], "_")))
-); // => false
+assert.strictEqual(
+  rule.applies_to(new TMConfiguration(1, new Tape([], "0", [], "_"))),
+  true
+);
+assert.strictEqual(
+  rule.applies_to(new TMConfiguration(1, new Tape([], "1", [], "_"))),
+  false
+);
+assert.strictEqual(
+  rule.applies_to(new TMConfiguration(2, new Tape([], "0", [], "_"))),
+  false
+);
 
 console.log("-----------------------");
 console.log(rule.follow(new TMConfiguration(1, new Tape([], "0", [], "_"))));
@@ -60,26 +64,25 @@ console.log("-----------------------");
 let dtm = new DTM(new TMConfiguration(1, tape), [3], rulebook);
 console.log(dtm.current_configuration);
 // => #<struct TMConfiguration state=1, tape=#<Tape 101(1)>>
-console.log(dtm.accepting()); // => false
+assert.strictEqual(dtm.accepting(), false);
 dtm.step();
 console.log(dtm.current_configuration);
 // => #<struct TMConfiguration state=1, tape=#<Tape 10(1)0>>
-console.log(dtm.accepting()); // => false
+assert.strictEqual(dtm.accepting(), false);
 dtm.run();
 console.log(dtm.current_configuration);
 // #<struct TMConfiguration state=3, tape=#<Tape 110(0)_>>
-console.log(dtm.accepting()); // => true
+assert.strictEqual(dtm.accepting(), true);
 
 console.log("-----------------------");
 tape = new Tape(["1", "2", "1"], "1", [], "_");
 console.log(tape);
 // => #<Tape 121(1)>
 dtm = new DTM(new TMConfiguration(1, tape), [3], rulebook); //  => #<struct DTM ...>
-dtm.run();
-// NoMethodError: undefined method 'follow' for nil:NilClass
-console.log(dtm.stuck()); // true
+dtm.run(); // NoMethodError: undefined method 'follow' for nil:NilClass
+assert.strictEqual(dtm.stuck(), true);
 
-console.log("-----------------------");
+console.log("---------识别'aaabbbccc'这样的字符串--------------");
 rulebook = new DTMRulebook([
   // 状态 1: 向右扫描，查找 a
   new TMRule(1, "X", 1, "X", "right"), // 跳过 X

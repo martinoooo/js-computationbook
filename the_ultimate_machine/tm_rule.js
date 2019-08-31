@@ -20,6 +20,7 @@ class TMRule {
     return new TMConfiguration(this.next_state, this.next_tape(configuration));
   }
 
+  // 纸条写入字符后，移动
   next_tape(configuration) {
     const written_tape = configuration.tape.write(this.write_character);
     switch (this.direction) {
